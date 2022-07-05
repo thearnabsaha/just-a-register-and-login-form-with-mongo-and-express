@@ -33,6 +33,24 @@ app.post('/register' , (req , res)=>{
        }
     })()
  })
+ //login logic
+app.post('/login' , (req , res)=>{
+    let result;
+    (async function(){
+       try {
+        const username=req.body.username
+        const password=req.body.password
+        result= await Account.findOne({username})
+        if(result.password===password){
+            res.status(201).sendFile(path.join(__dirname,"../client","account.html"))
+        }else{
+            res.send("invalid login details!!")
+        }
+       } catch (error) {
+          res.status(400).send(error)
+       }
+    })()
+ })
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname,"../client","index.html")))
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname,"../client","register.html")))
