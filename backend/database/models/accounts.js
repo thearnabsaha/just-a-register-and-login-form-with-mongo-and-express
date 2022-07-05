@@ -13,6 +13,8 @@ const accountSchema= new mongoose.Schema({
     },
     email:{
         type:String,
+        required:true,
+        unique:true,
         validate(value){
             if(!validator.isEmail(value)){
                 throw new Error("Email is invalid!!!")
@@ -30,6 +32,10 @@ const accountSchema= new mongoose.Schema({
     date:{
         type:Date,
         default: Date.now
+    },
+    gender:{
+    type:String,
+        required:true
     }
 
 })

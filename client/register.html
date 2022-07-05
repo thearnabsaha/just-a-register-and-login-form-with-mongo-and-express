@@ -8,12 +8,18 @@
 </head>
 <body>
     <h1>Register</h1>
-    <form action="/regsiter" method="post">
+    <form action="/register" method="post">
         <input type="text" placeholder="Name" name="name">
         <input type="text" placeholder="Username" name="username">
         <input type="email" placeholder="Email" name="email">
         <input type="password" placeholder="password" name="password">
         <input type="password" placeholder="Confirm Password" name="confirmPassword">
+        <label for="male">Male</label>
+        <input type="radio" name="gender" value="male">        
+        <label for="female">Female</label>
+        <input type="radio" name="gender" value="female">        
+        <label for="others">Others</label>
+        <input type="radio" name="gender" value="others">        
         <button type="submit">Register</button>
     </form>
 </body>
