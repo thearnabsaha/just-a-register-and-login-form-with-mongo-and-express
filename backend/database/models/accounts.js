@@ -53,7 +53,6 @@ accountSchema.methods.generateAuthToken = async function(){
         const token = jwt.sign({_id:this._id},process.env.SECRET_KEY)
         this.tokens =this.tokens.concat({token})
         await this.save()
-        console.log(process.env.SECRET_KEY);
         return token
     } catch (error) {
         res.send(error)
