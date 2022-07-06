@@ -1,12 +1,14 @@
 const express = require('express')
 const path = require('path');
 const Account = require('./database/models/accounts');
+const bcrypt = require("bcryptjs")
 const app = express()
 const port = process.env.PORT || 3000
 require("./database/connection")
 app.use(express.static(path.join(__dirname,"../client","public")))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+
 // create a new user in our database
 app.post('/register' , (req , res)=>{
     let result;
@@ -41,7 +43,8 @@ app.post('/login' , (req , res)=>{
         const username=req.body.username
         const password=req.body.password
         result= await Account.findOne({username})
-        if(result.password===password){
+        const isMatch= await bcrypt.compare(password,result.password)
+        if(isMatch){
             res.status(201).sendFile(path.join(__dirname,"../client","account.html"))
         }else{
             res.send("invalid login details!!")
