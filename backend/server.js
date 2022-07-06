@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path');
 const Account = require('./database/models/accounts');
+const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs")
 const app = express()
 const port = process.env.PORT || 3000
@@ -9,7 +11,6 @@ app.use(express.static(path.join(__dirname,"../client","public")))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
-// create a new user in our database
 app.post('/register' , (req , res)=>{
     let result;
     (async function(){
@@ -25,6 +26,7 @@ app.post('/register' , (req , res)=>{
                 gender:req.body.gender,
                 username:req.body.username
             })
+            const token = await user.generateAuthToken()
             result = await user.save()
             res.status(201).sendFile(path.join(__dirname,"../client","index.html"))
         }else{
@@ -44,6 +46,8 @@ app.post('/login' , (req , res)=>{
         const password=req.body.password
         result= await Account.findOne({username})
         const isMatch= await bcrypt.compare(password,result.password)
+        const token = await result.generateAuthToken()
+        console.log(token);
         if(isMatch){
             res.status(201).sendFile(path.join(__dirname,"../client","account.html"))
         }else{
